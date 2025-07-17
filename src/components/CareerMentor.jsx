@@ -131,7 +131,7 @@ const CareerMentor = () => {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="card mb-4 sm:mb-6">
         <div className="text-center mb-4 sm:mb-6">
-          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-2">
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mb-2">
             Your AI Career Mentor
           </h2>
           <p className="text-sm sm:text-base text-gray-600 px-2">

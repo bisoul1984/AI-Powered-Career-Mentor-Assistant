@@ -32,10 +32,23 @@ const ChatMessage = ({ message, onCopy, onDownload }) => {
   }
 
   const formatTime = (date) => {
-    return new Intl.DateTimeFormat('en-US', {
-      hour: '2-digit',
-      minute: '2-digit'
-    }).format(date)
+    try {
+      // Handle different date formats
+      const dateObj = date instanceof Date ? date : new Date(date)
+      
+      // Check if the date is valid
+      if (isNaN(dateObj.getTime())) {
+        return 'Just now'
+      }
+      
+      return new Intl.DateTimeFormat('en-US', {
+        hour: '2-digit',
+        minute: '2-digit'
+      }).format(dateObj)
+    } catch (error) {
+      console.warn('Error formatting time:', error)
+      return 'Just now'
+    }
   }
 
   const handleFeedback = (type) => {
