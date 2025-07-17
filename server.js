@@ -192,7 +192,20 @@ app.use(cors())
 app.use(express.json())
 
 // Serve static files from the dist directory (after build)
-app.use(express.static('dist'))
+const fs = require('fs')
+const path = require('path')
+
+if (process.env.NODE_ENV === 'production') {
+  // In production, serve the built React app
+  if (fs.existsSync(path.join(__dirname, 'dist'))) {
+    app.use(express.static('dist'))
+  }
+} else {
+  // In development, serve static files if they exist
+  if (fs.existsSync(path.join(__dirname, 'dist'))) {
+    app.use(express.static('dist'))
+  }
+}
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
