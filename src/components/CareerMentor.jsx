@@ -91,6 +91,25 @@ const CareerMentor = () => {
     URL.revokeObjectURL(url)
   }
 
+  const downloadConversation = () => {
+    if (messages.length === 0) return
+    const lines = messages.map((msg) => {
+      const who = msg.type === 'user' ? 'You' : msg.type === 'ai' ? 'AI Mentor' : 'Error'
+      const time = new Date(msg.timestamp).toLocaleTimeString()
+      return `[${time}] ${who}:\n${msg.content}\n`
+    })
+    const text = lines.join('\n')
+    const blob = new Blob([text], { type: 'text/plain' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'career-mentor-conversation.txt'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }
+
   return (
     <div className="max-w-4xl mx-auto">
       <div className="card mb-6">
@@ -136,6 +155,19 @@ const CareerMentor = () => {
           >
             <Trash2 className="h-4 w-4" />
             <span>Clear Chat</span>
+          </button>
+        </div>
+      )}
+
+      {/* Export Chat Button */}
+      {messages.length > 0 && !isLoading && (
+        <div className="flex justify-center mt-2">
+          <button
+            onClick={downloadConversation}
+            className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200 mr-2"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" /></svg>
+            <span>Export Chat</span>
           </button>
         </div>
       )}
