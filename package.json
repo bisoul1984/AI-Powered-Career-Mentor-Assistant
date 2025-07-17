@@ -10,7 +10,8 @@
     "lint": "eslint . --ext js,jsx,ts,tsx",
     "lint:fix": "eslint . --ext js,jsx,ts,tsx --fix",
     "server": "node server.js",
-    "start": "npm run build && npm run server",
+    "start": "node server.js",
+    "vercel-build": "npm run build",
     "dev:full": "concurrently \"npm run dev\" \"npm run server\""
   },
   "dependencies": {

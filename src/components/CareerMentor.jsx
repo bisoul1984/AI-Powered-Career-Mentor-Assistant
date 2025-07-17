@@ -3,6 +3,7 @@ import { Send, Copy, Download, Loader2, Trash2 } from 'lucide-react'
 import ChatMessage from './ChatMessage'
 import InputForm from './InputForm'
 import { useRef } from 'react'
+import { API_ENDPOINTS } from '../config/api'
 
 const LOCAL_STORAGE_KEY = 'careerMentorChatHistory'
 
@@ -42,7 +43,7 @@ const CareerMentor = () => {
     setIsLoading(true)
 
     try {
-      const response = await fetch('/api/career-guidance', {
+      const response = await fetch(API_ENDPOINTS.careerGuidance, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

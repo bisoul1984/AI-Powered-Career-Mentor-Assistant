@@ -194,6 +194,11 @@ app.use(express.json())
 // Serve static files from the dist directory (after build)
 app.use(express.static('dist'))
 
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'OK', message: 'Career Mentor API is running' })
+})
+
 // OpenAI API endpoint
 app.post('/api/career-guidance', async (req, res) => {
   try {
