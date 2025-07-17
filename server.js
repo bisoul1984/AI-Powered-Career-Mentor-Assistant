@@ -215,6 +215,16 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Career Mentor API is running' })
 })
 
+// Test endpoint for Railway health checks
+app.get('/api/test', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    message: 'Career Mentor API is running',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  })
+})
+
 // OpenAI API endpoint
 app.post('/api/career-guidance', async (req, res) => {
   try {

@@ -2,7 +2,7 @@
   "name": "ai-career-mentor",
   "version": "1.0.0",
   "description": "AI-Powered Career Mentor Assistant using OpenAI GPT API",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -12,7 +12,9 @@
     "server": "node server.js",
     "start": "node server.js",
     "vercel-build": "npm run build",
-    "dev:full": "concurrently \"npm run dev\" \"npm run server\""
+    "dev:full": "concurrently \"npm run dev\" \"npm run server\"",
+    "railway-build": "npm run build && npm install --production",
+    "railway-start": "node server.js"
   },
   "dependencies": {
     "react": "^18.2.0",
