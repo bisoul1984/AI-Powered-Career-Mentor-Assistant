@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Send, Copy, Download, Loader2, Trash2 } from 'lucide-react'
 import ChatMessage from './ChatMessage'
 import InputForm from './InputForm'
+import { useRef } from 'react'
 
 const LOCAL_STORAGE_KEY = 'careerMentorChatHistory'
 
@@ -12,10 +13,18 @@ const CareerMentor = () => {
     return saved ? JSON.parse(saved) : []
   })
   const [isLoading, setIsLoading] = useState(false)
+  const [input, setInput] = useState('')
+  const messagesEndRef = useRef(null)
 
   // Save messages to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(messages))
+  }, [messages])
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
   }, [messages])
 
   const handleSubmit = async (userInput) => {
@@ -110,23 +119,46 @@ const CareerMentor = () => {
     URL.revokeObjectURL(url)
   }
 
+  const exampleQuestions = [
+    "I like design and technology, what careers should I consider?",
+    "What can I do with HTML, CSS, and Python skills?",
+    "I'm interested in data science, what should I learn next?",
+    "How can I transition from teaching to tech?",
+    "What are high-paying remote jobs for creative people?"
+  ]
+
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="card mb-6">
-        <div className="text-center mb-6">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="card mb-4 sm:mb-6">
+        <div className="text-center mb-4 sm:mb-6">
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-2">
             Your AI Career Mentor
           </h2>
-          <p className="text-gray-600">
+          <p className="text-sm sm:text-base text-gray-600 px-2">
             Tell me about your skills, interests, or career questions. I'll provide personalized guidance and learning paths.
           </p>
         </div>
 
-        <InputForm onSubmit={handleSubmit} isLoading={isLoading} />
+        <InputForm onSubmit={handleSubmit} isLoading={isLoading} input={input} setInput={setInput} />
+
+        {/* Example Questions */}
+        <div className="flex flex-wrap gap-2 justify-center mt-3 sm:mt-4 mb-4 sm:mb-6 px-2">
+          {exampleQuestions.map((q, i) => (
+            <button
+              key={i}
+              type="button"
+              className="px-3 py-2 sm:px-4 sm:py-2 bg-gray-100 hover:bg-primary-100 text-gray-700 rounded-full border border-gray-200 text-xs sm:text-sm transition-colors duration-150 min-h-[44px] touch-manipulation"
+              onClick={() => setInput(q)}
+              tabIndex={0}
+            >
+              {q}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Messages */}
-      <div className="space-y-4">
+      <div className="space-y-3 sm:space-y-4" style={{ maxHeight: '50vh', overflowY: 'auto' }}>
         {messages.map((message) => (
           <ChatMessage 
             key={message.id} 
@@ -144,14 +176,15 @@ const CareerMentor = () => {
             </div>
           </div>
         )}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Clear Chat Button */}
       {messages.length > 0 && !isLoading && (
-        <div className="flex justify-center mt-6">
+        <div className="flex justify-center mt-4 sm:mt-6">
           <button
             onClick={clearChat}
-            className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
+            className="flex items-center space-x-2 px-4 py-3 sm:py-2 text-sm text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200 min-h-[44px] touch-manipulation"
           >
             <Trash2 className="h-4 w-4" />
             <span>Clear Chat</span>
@@ -161,10 +194,10 @@ const CareerMentor = () => {
 
       {/* Export Chat Button */}
       {messages.length > 0 && !isLoading && (
-        <div className="flex justify-center mt-2">
+        <div className="flex justify-center mt-2 sm:mt-3">
           <button
             onClick={downloadConversation}
-            className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200 mr-2"
+            className="flex items-center space-x-2 px-4 py-3 sm:py-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200 min-h-[44px] touch-manipulation"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" /></svg>
             <span>Export Chat</span>
@@ -175,10 +208,10 @@ const CareerMentor = () => {
       {/* Empty state */}
       {messages.length === 0 && !isLoading && (
         <div className="card text-center">
-          <div className="text-gray-500">
-            <p className="text-lg mb-2">👋 Welcome to your AI Career Mentor!</p>
-            <p className="mb-4">Try asking questions like:</p>
-            <div className="space-y-2 text-sm">
+          <div className="text-gray-500 px-4">
+            <p className="text-base sm:text-lg mb-2">👋 Welcome to your AI Career Mentor!</p>
+            <p className="mb-4 text-sm sm:text-base">Try asking questions like:</p>
+            <div className="space-y-2 text-xs sm:text-sm">
               <p>"I like design and technology, what careers should I consider?"</p>
               <p>"What can I do with HTML, CSS, and Python skills?"</p>
               <p>"I'm interested in data science, what should I learn next?"</p>

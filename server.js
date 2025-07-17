@@ -203,8 +203,11 @@ app.post('/api/career-guidance', async (req, res) => {
       return res.status(400).json({ error: 'Message is required' })
     }
 
+        // TODO: Add your OpenAI API key here or use environment variable
+    const OPENAI_API_KEY = process.env.OPENAI_API_KEY || 'your-openai-api-key-here'
+    
     // Check if OpenAI API key is configured
-    if (!process.env.OPENAI_API_KEY) {
+    if (!OPENAI_API_KEY) {
       // Return a demo response instead of error
       const demoResponse = generateDemoResponse(message)
       return res.json({ response: demoResponse })
@@ -246,7 +249,7 @@ Please provide personalized career guidance based on this input.`
       },
       {
         headers: {
-          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+          'Authorization': `Bearer ${OPENAI_API_KEY}`,
           'Content-Type': 'application/json'
         }
       }
