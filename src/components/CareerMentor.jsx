@@ -1,11 +1,22 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Send, Copy, Download, Loader2 } from 'lucide-react'
 import ChatMessage from './ChatMessage'
 import InputForm from './InputForm'
 
+const LOCAL_STORAGE_KEY = 'careerMentorChatHistory'
+
 const CareerMentor = () => {
-  const [messages, setMessages] = useState([])
+  // Load messages from localStorage if available
+  const [messages, setMessages] = useState(() => {
+    const saved = localStorage.getItem(LOCAL_STORAGE_KEY)
+    return saved ? JSON.parse(saved) : []
+  })
   const [isLoading, setIsLoading] = useState(false)
+
+  // Save messages to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(messages))
+  }, [messages])
 
   const handleSubmit = async (userInput) => {
     if (!userInput.trim()) return
