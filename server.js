@@ -1,6 +1,9 @@
 const express = require('express')
 const cors = require('cors')
 const axios = require('axios')
+const { execSync } = require('child_process')
+const fs = require('fs')
+const path = require('path')
 require('dotenv').config()
 
 const app = express()
@@ -191,20 +194,20 @@ I'd be happy to provide personalized career guidance! Here are some general care
 app.use(cors())
 app.use(express.json())
 
-// Serve static files from the dist directory (after build)
-const fs = require('fs')
-const path = require('path')
+// Build frontend in production if dist doesn't exist
+if (process.env.NODE_ENV === 'production' && !fs.existsSync(path.join(__dirname, 'dist'))) {
+  try {
+    console.log('Building frontend for production...')
+    execSync('npm run build', { stdio: 'inherit' })
+    console.log('Frontend build completed')
+  } catch (error) {
+    console.error('Failed to build frontend:', error)
+  }
+}
 
-if (process.env.NODE_ENV === 'production') {
-  // In production, serve the built React app
-  if (fs.existsSync(path.join(__dirname, 'dist'))) {
-    app.use(express.static('dist'))
-  }
-} else {
-  // In development, serve static files if they exist
-  if (fs.existsSync(path.join(__dirname, 'dist'))) {
-    app.use(express.static('dist'))
-  }
+// Serve static files from the dist directory (after build)
+if (fs.existsSync(path.join(__dirname, 'dist'))) {
+  app.use(express.static('dist'))
 }
 
 // Health check endpoint
@@ -300,7 +303,12 @@ Please provide personalized career guidance based on this input.`
 
 // Serve React app for all other routes
 app.get('*', (req, res) => {
-  res.sendFile('dist/index.html', { root: '.' })
+  const indexPath = path.join(__dirname, 'dist', 'index.html')
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath)
+  } else {
+    res.status(404).json({ error: 'Frontend not built. Please build the React app first.' })
+  }
 })
 
 app.listen(PORT, () => {
