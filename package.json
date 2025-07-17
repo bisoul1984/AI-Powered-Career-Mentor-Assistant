@@ -1,0 +1,49 @@
+{
+  "name": "ai-career-mentor",
+  "version": "1.0.0",
+  "description": "AI-Powered Career Mentor Assistant using OpenAI GPT API",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext js,jsx,ts,tsx",
+    "lint:fix": "eslint . --ext js,jsx,ts,tsx --fix",
+    "server": "node server.js",
+    "start": "npm run build && npm run server",
+    "dev:full": "concurrently \"npm run dev\" \"npm run server\""
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "axios": "^1.6.0",
+    "lucide-react": "^0.294.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@vitejs/plugin-react": "^4.1.1",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.53.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.4",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.3.5",
+    "vite": "^4.5.0",
+    "concurrently": "^8.2.2"
+  },
+  "keywords": [
+    "ai",
+    "career",
+    "mentor",
+    "openai",
+    "react",
+    "gpt"
+  ],
+  "author": "Bisrat Tadesse",
+  "license": "MIT"
+} 
