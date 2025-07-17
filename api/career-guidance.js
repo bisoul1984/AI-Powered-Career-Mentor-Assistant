@@ -22,129 +22,19 @@ function generateDemoResponse(userInput) {
 - Average salary: $90,000 - $130,000
 - Strategic role in product development
 
-**Digital Marketing Designer**
-- Create visual content for marketing campaigns
-- Average salary: $60,000 - $90,000
-- Blend of creativity and analytics
-
 📚 **Required Skills:**
 • Figma, Adobe Creative Suite
 • HTML, CSS, JavaScript
 • User research and testing
 • Prototyping tools
-• Understanding of user psychology
 
 🛣️ **Learning Roadmap:**
-1. **Month 1-2:** Learn design fundamentals (color theory, typography, layout)
-2. **Month 3-4:** Master design tools (Figma, Sketch, Adobe XD)
+1. **Month 1-2:** Learn design fundamentals
+2. **Month 3-4:** Master design tools (Figma, Sketch)
 3. **Month 5-6:** Learn basic coding (HTML, CSS, JavaScript)
 4. **Month 7-8:** Build portfolio projects
-5. **Month 9-10:** Learn user research and testing
-6. **Month 11-12:** Apply for internships or entry-level positions
 
-📖 **Resources & Next Steps:**
-• **Courses:** Udemy, Coursera, Skillshare
-• **Communities:** Dribbble, Behance, Designer News
-• **Practice:** Daily UI challenges, redesign existing apps
-• **Networking:** Attend design meetups, join online communities
-
-💡 **Pro Tip:** Start with UI/UX design as it's the perfect blend of your interests and has excellent career prospects!`
-  }
-  
-  if (lowerInput.includes('html') || lowerInput.includes('css') || lowerInput.includes('python')) {
-    return `💻 **Career Suggestions for HTML, CSS & Python Skills:**
-
-**Full-Stack Web Developer**
-- Build complete web applications
-- Average salary: $80,000 - $130,000
-- High demand across all industries
-
-**Frontend Developer**
-- Focus on user interface and experience
-- Average salary: $75,000 - $110,000
-- Perfect for your HTML/CSS skills
-
-**Backend Developer**
-- Build server-side applications and APIs
-- Average salary: $85,000 - $120,000
-- Great for Python expertise
-
-**Data Analyst**
-- Analyze data and create insights
-- Average salary: $70,000 - $100,000
-- Python is essential for data work
-
-📚 **Required Skills:**
-• JavaScript (React, Vue, or Angular)
-• Python frameworks (Django, Flask)
-• Database management (SQL, MongoDB)
-• Version control (Git)
-• API development
-
-🛣️ **Learning Roadmap:**
-1. **Month 1-2:** Master JavaScript fundamentals
-2. **Month 3-4:** Learn a frontend framework (React recommended)
-3. **Month 5-6:** Study Python web frameworks (Django/Flask)
-4. **Month 7-8:** Learn database design and SQL
-5. **Month 9-10:** Build full-stack projects
-6. **Month 11-12:** Deploy projects and apply for jobs
-
-📖 **Resources & Next Steps:**
-• **JavaScript:** freeCodeCamp, MDN Web Docs
-• **React:** React documentation, Scrimba
-• **Python:** Real Python, Python.org tutorials
-• **Projects:** Build a portfolio website, create a web app
-• **Networking:** GitHub, Stack Overflow, local meetups
-
-💡 **Pro Tip:** Focus on becoming a full-stack developer - it's the most versatile and in-demand role!`
-  }
-  
-  if (lowerInput.includes('data science') || lowerInput.includes('data')) {
-    return `📊 **Career Suggestions for Data Science:**
-
-**Data Scientist**
-- Analyze complex data and build predictive models
-- Average salary: $100,000 - $150,000
-- One of the highest-paying tech roles
-
-**Data Analyst**
-- Transform data into actionable insights
-- Average salary: $70,000 - $100,000
-- Great entry point into data careers
-
-**Machine Learning Engineer**
-- Build and deploy ML models
-- Average salary: $110,000 - $160,000
-- Advanced role with high demand
-
-**Business Intelligence Analyst**
-- Create reports and dashboards
-- Average salary: $75,000 - $110,000
-- Bridge between data and business
-
-📚 **Required Skills:**
-• Python (pandas, numpy, scikit-learn)
-• SQL for database queries
-• Statistics and mathematics
-• Data visualization (Tableau, Power BI)
-• Machine learning algorithms
-
-🛣️ **Learning Roadmap:**
-1. **Month 1-2:** Master Python fundamentals
-2. **Month 3-4:** Learn data manipulation (pandas, numpy)
-3. **Month 5-6:** Study statistics and probability
-4. **Month 7-8:** Learn SQL and database management
-5. **Month 9-10:** Master data visualization
-6. **Month 11-12:** Learn machine learning basics
-
-📖 **Resources & Next Steps:**
-• **Python:** DataCamp, Coursera, edX
-• **Statistics:** Khan Academy, Statistics.com
-• **Projects:** Kaggle competitions, personal data projects
-• **Networking:** Data science meetups, LinkedIn groups
-• **Certifications:** Google Data Analytics, IBM Data Science
-
-💡 **Pro Tip:** Start with data analysis roles to build experience before moving into data science!`
+💡 **Pro Tip:** Start with UI/UX design as it's the perfect blend of your interests!`
   }
   
   // Default response for any other input
@@ -159,26 +49,15 @@ I'd be happy to provide personalized career guidance! Here are some general care
 2. **Research:** Explore different industries and roles
 3. **Network:** Connect with professionals in fields you're interested in
 4. **Gain Experience:** Internships, projects, or volunteer work
-5. **Continuous Learning:** Stay updated with industry trends
 
 **Popular Career Paths to Consider:**
 • Software Development
 • Digital Marketing
 • Project Management
-• Sales and Business Development
 • Creative Design
 • Data Analysis
-• Customer Success
-• Product Management
 
-**Next Steps:**
-• Research specific roles that interest you
-• Learn relevant skills through online courses
-• Build a portfolio of projects
-• Network with professionals in your target field
-• Consider certifications or advanced education
-
-💡 **Pro Tip:** The best career path is one that aligns with your interests, skills, and values while offering growth opportunities!`
+💡 **Pro Tip:** The best career path is one that aligns with your interests, skills, and values!`
 }
 
 module.exports = async (req, res) => {
