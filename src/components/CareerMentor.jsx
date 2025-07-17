@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Send, Copy, Download, Loader2 } from 'lucide-react'
+import { Send, Copy, Download, Loader2, Trash2 } from 'lucide-react'
 import ChatMessage from './ChatMessage'
 import InputForm from './InputForm'
 
@@ -70,6 +70,11 @@ const CareerMentor = () => {
     }
   }
 
+  const clearChat = () => {
+    setMessages([])
+    localStorage.removeItem(LOCAL_STORAGE_KEY)
+  }
+
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text)
   }
@@ -121,6 +126,19 @@ const CareerMentor = () => {
           </div>
         )}
       </div>
+
+      {/* Clear Chat Button */}
+      {messages.length > 0 && !isLoading && (
+        <div className="flex justify-center mt-6">
+          <button
+            onClick={clearChat}
+            className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
+          >
+            <Trash2 className="h-4 w-4" />
+            <span>Clear Chat</span>
+          </button>
+        </div>
+      )}
 
       {/* Empty state */}
       {messages.length === 0 && !isLoading && (
