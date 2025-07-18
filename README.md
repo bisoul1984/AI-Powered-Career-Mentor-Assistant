@@ -2,6 +2,10 @@
 
 A React-based web assistant that helps users explore careers using OpenAI GPT-4. Users input their interests or skills, and the assistant responds with detailed suggestions and learning paths. Built with React, OpenAI API, and styled with TailwindCSS.
 
+## 🌐 Live Application
+
+**Access the application here**: [https://ai-powered-career-mentor-assistant.vercel.app/](https://ai-powered-career-mentor-assistant.vercel.app/)
+
 ## 🚀 Features
 
 - **AI-Powered Career Guidance**: Get personalized career advice using OpenAI's GPT API
@@ -10,11 +14,12 @@ A React-based web assistant that helps users explore careers using OpenAI GPT-4.
 - **Copy & Download**: Save responses for later reference
 - **Responsive Design**: Works perfectly on desktop and mobile devices
 - **Real-time Loading States**: Smooth user experience with loading indicators
+- **Smart Fallback System**: Demo responses when AI is unavailable
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: React.js with Vite
-- **Backend**: Node.js with Express
+- **Frontend**: React.js with Vite (Deployed on Vercel)
+- **Backend**: Node.js with Express (Deployed on Railway)
 - **AI Integration**: OpenAI GPT-3.5/4 API
 - **Styling**: TailwindCSS
 - **Icons**: Lucide React
@@ -24,8 +29,8 @@ A React-based web assistant that helps users explore careers using OpenAI GPT-4.
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
-   cd ai-career-mentor
+   git clone https://github.com/bisoul1984/AI-Powered-Career-Mentor-Assistant.git
+   cd AI-Powered-Career-Mentor-Assistant
    ```
 
 2. **Install dependencies**
@@ -71,11 +76,12 @@ Builds the React app and starts the production server.
 
 ## 📱 Usage
 
-1. Open your browser and navigate to `http://localhost:3000` (dev) or `http://localhost:5000` (production)
-2. Enter your skills, interests, or career questions in the text area
-3. Click "Ask Mentor" or press Enter
-4. Receive personalized career guidance and learning paths
-5. Copy or download responses for future reference
+1. **Live Application**: Visit [https://ai-powered-career-mentor-assistant.vercel.app/](https://ai-powered-career-mentor-assistant.vercel.app/)
+2. **Local Development**: Open your browser and navigate to `http://localhost:3000` (dev) or `http://localhost:5000` (production)
+3. Enter your skills, interests, or career questions in the text area
+4. Click "Ask Mentor" or press Enter
+5. Receive personalized career guidance and learning paths
+6. Copy or download responses for future reference
 
 ### Example Questions to Try:
 - "I like design and technology, what careers should I consider?"
@@ -107,22 +113,30 @@ Builds the React app and starts the production server.
 ## 📁 Project Structure
 
 ```
-ai-career-mentor/
-├── src/
-│   ├── components/
-│   │   ├── Header.jsx          # App header with title
-│   │   ├── CareerMentor.jsx    # Main chat interface
-│   │   ├── InputForm.jsx       # User input form
-│   │   ├── ChatMessage.jsx     # Individual message display
-│   │   └── Footer.jsx          # App footer
-│   ├── App.jsx                 # Main app component
-│   ├── main.jsx                # React entry point
-│   └── index.css               # Global styles
-├── server.js                   # Express backend server
-├── package.json                # Dependencies and scripts
-├── vite.config.js              # Vite configuration
-├── tailwind.config.js          # Tailwind CSS configuration
-└── README.md                   # This file
+AI-Powered-Career-Mentor-Assistant/
+├── frontend/                    # Vercel deployment
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Header.jsx          # App header with title
+│   │   │   ├── CareerMentor.jsx    # Main chat interface
+│   │   │   ├── InputForm.jsx       # User input form
+│   │   │   ├── ChatMessage.jsx     # Individual message display
+│   │   │   └── Footer.jsx          # App footer
+│   │   ├── config/
+│   │   │   └── api.js              # API configuration
+│   │   ├── App.jsx                 # Main app component
+│   │   ├── main.jsx                # React entry point
+│   │   └── index.css               # Global styles
+│   ├── package.json                # Frontend dependencies
+│   ├── vite.config.js              # Vite configuration
+│   ├── tailwind.config.js          # Tailwind CSS configuration
+│   └── vercel.json                 # Vercel configuration
+├── backend/                       # Railway deployment
+│   ├── server.js                   # Express backend server
+│   ├── package.json                # Backend dependencies
+│   └── railway.json                # Railway configuration
+├── package.json                    # Root dependencies
+└── README.md                       # This file
 ```
 
 ## 🔧 API Endpoints
@@ -140,41 +154,39 @@ Sends user input to OpenAI and returns career guidance.
 **Response:**
 ```json
 {
-  "response": "Based on your interest in design and technology..."
+  "response": "Based on your interest in design and technology...",
+  "note": "Using demo mode. AI responses will be available once rate limits are resolved."
 }
 ```
+
+## 🚀 Deployment
+
+### Frontend (Vercel)
+- **URL**: [https://ai-powered-career-mentor-assistant.vercel.app/](https://ai-powered-career-mentor-assistant.vercel.app/)
+- **Framework**: Vite + React
+- **Build Command**: `npm run build`
+- **Output Directory**: `dist`
+
+### Backend (Railway)
+- **URL**: [https://ai-powered-career-mentor-assistant-production.up.railway.app/](https://ai-powered-career-mentor-assistant-production.up.railway.app/)
+- **Framework**: Node.js + Express
+- **Environment**: Production with OpenAI API integration
 
 ## 🎨 Customization
 
 ### Styling
-- Modify `tailwind.config.js` for theme customization
-- Update `src/index.css` for global styles
+- Modify `frontend/tailwind.config.js` for theme customization
+- Update `frontend/src/index.css` for global styles
 - Component-specific styles are in each component file
 
 ### AI Prompts
-- Edit the system prompt in `server.js` to change AI behavior
+- Edit the system prompt in `backend/server.js` to change AI behavior
 - Adjust `max_tokens` and `temperature` for different response styles
 
 ### Features
-- Add new components in `src/components/`
+- Add new components in `frontend/src/components/`
 - Extend the chat functionality in `CareerMentor.jsx`
-- Add new API endpoints in `server.js`
-
-## 🚀 Deployment
-
-### Vercel (Recommended)
-1. Connect your GitHub repository to Vercel
-2. Set environment variables in Vercel dashboard
-3. Deploy automatically on push
-
-### Netlify
-1. Build the project: `npm run build`
-2. Upload the `dist` folder to Netlify
-3. Set environment variables in Netlify dashboard
-
-### Heroku
-1. Add `"engines": { "node": "18.x" }` to package.json
-2. Deploy using Heroku CLI or GitHub integration
+- Add new API endpoints in `backend/server.js`
 
 ## 🤝 Contributing
 
@@ -194,7 +206,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - React team for the amazing framework
 - TailwindCSS for the utility-first CSS framework
 - Lucide for the beautiful icons
+- Vercel for frontend hosting
+- Railway for backend hosting
 
 ---
 
-**Built with ❤️ by Bisrat Tadesse** 
+**Built with ❤️ by [Bisrat Tadesse](https://www.bisrat-tadesse.com)**
+
+**🌐 Live Application**: [https://ai-powered-career-mentor-assistant.vercel.app/](https://ai-powered-career-mentor-assistant.vercel.app/) 
