@@ -6,7 +6,15 @@ const Footer = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">
           <p className="text-gray-600 dark:text-gray-300 mb-4">
-            Built with ❤️ by Bisrate Tadesse
+            Built with ❤️ by{' '}
+            <a
+              href="https://www.bisrat-tadesse.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition-colors duration-200"
+            >
+              Bisrat Tadesse
+            </a>
           </p>
           
           <div className="flex items-center justify-center space-x-6 mb-4">
