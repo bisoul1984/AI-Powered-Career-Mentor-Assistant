@@ -16,17 +16,25 @@ const CareerMentor = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [input, setInput] = useState('')
   const messagesEndRef = useRef(null)
+  const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false)
 
   // Save messages to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(messages))
   }, [messages])
 
+  // Scroll to bottom only when new messages are added (not on page refresh)
   useEffect(() => {
-    if (messagesEndRef.current) {
+    if (shouldScrollToBottom && messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+      setShouldScrollToBottom(false)
     }
-  }, [messages])
+  }, [messages, shouldScrollToBottom])
+
+  // Keep page at top on refresh
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   const handleSubmit = async (userInput) => {
     if (!userInput.trim()) return
@@ -40,6 +48,7 @@ const CareerMentor = () => {
     }
 
     setMessages(prev => [...prev, userMessage])
+    setShouldScrollToBottom(true) // Enable scrolling for new messages
     setIsLoading(true)
 
     try {
@@ -66,6 +75,7 @@ const CareerMentor = () => {
       }
 
       setMessages(prev => [...prev, aiMessage])
+      setShouldScrollToBottom(true) // Enable scrolling for AI response
     } catch (error) {
       console.error('Error:', error)
       const errorMessage = {
@@ -75,6 +85,7 @@ const CareerMentor = () => {
         timestamp: new Date()
       }
       setMessages(prev => [...prev, errorMessage])
+      setShouldScrollToBottom(true) // Enable scrolling for error message
     } finally {
       setIsLoading(false)
     }
