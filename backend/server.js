@@ -226,11 +226,17 @@ app.post('/api/career-guidance', async (req, res) => {
     // TODO: Add your OpenAI API key here or use environment variable
     const OPENAI_API_KEY = process.env.OPENAI_API_KEY || 'your-openai-api-key-here'
     
-    // Check if OpenAI API key is configured
-    if (!OPENAI_API_KEY || OPENAI_API_KEY === 'your-openai-api-key-here') {
+    // TEMPORARY: Force demo mode to bypass rate limit issues
+    const FORCE_DEMO_MODE = process.env.FORCE_DEMO_MODE === 'true' || true
+    
+    // Check if OpenAI API key is configured or force demo mode
+    if (!OPENAI_API_KEY || OPENAI_API_KEY === 'your-openai-api-key-here' || FORCE_DEMO_MODE) {
       // Return a demo response instead of error
       const demoResponse = generateDemoResponse(message)
-      return res.json({ response: demoResponse })
+      return res.json({ 
+        response: demoResponse,
+        note: FORCE_DEMO_MODE ? 'Using demo mode. AI responses will be available once rate limits are resolved.' : 'Using demo response due to missing API key.'
+      })
     }
 
     // Create the prompt for career guidance
