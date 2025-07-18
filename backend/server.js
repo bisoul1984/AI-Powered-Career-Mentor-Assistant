@@ -289,8 +289,12 @@ Please provide personalized career guidance based on this input.`
     }
     
     if (error.response?.status === 429) {
-      return res.status(429).json({ 
-        error: 'Rate limit exceeded. Please try again later.' 
+      // Instead of returning 429 error, return demo response
+      console.log('Rate limit exceeded, using demo response')
+      const demoResponse = generateDemoResponse(message)
+      return res.json({ 
+        response: demoResponse,
+        note: 'Using demo response due to rate limit. Try again in a few minutes for AI-powered responses.'
       })
     }
 
