@@ -189,8 +189,16 @@ I'd be happy to provide personalized career guidance! Here are some general care
 
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL || '*', // Allow frontend URL or all origins in development
-  credentials: true
+  origin: [
+    'https://ai-powered-career-mentor-assistant-4kdjifuzx.vercel.app',
+    'https://ai-powered-career-mentor-assistant-4kdjifuzx.vercel.app/',
+    process.env.FRONTEND_URL,
+    'http://localhost:5173',
+    'http://localhost:3000'
+  ].filter(Boolean), // Remove any undefined values
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }))
 app.use(express.json())
 
