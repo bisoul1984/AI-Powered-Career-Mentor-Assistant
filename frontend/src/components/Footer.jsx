@@ -27,7 +27,7 @@ const Footer = () => {
             >
               <Github className="h-5 w-5" />
             </a>
-            <a
+{/*             <a
               href="https://linkedin.com/"
               target="_blank"
               rel="noopener noreferrer"
@@ -35,7 +35,7 @@ const Footer = () => {
               aria-label="LinkedIn Profile"
             >
               <Linkedin className="h-5 w-5" />
-            </a>
+            </a> */}
             <a
               href="mailto:bisrat.tadesse@example.com"
               className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200"
