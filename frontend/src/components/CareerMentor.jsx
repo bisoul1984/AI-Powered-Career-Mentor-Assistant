@@ -6,6 +6,55 @@ import { useRef } from 'react'
 import { API_ENDPOINTS } from '../config/api'
 
 const LOCAL_STORAGE_KEY = 'careerMentorChatHistory'
+const REQUEST_TIMEOUT_MS = 8000
+
+const generateDemoResponse = (userInput = '') => {
+  const lowerInput = userInput.toLowerCase()
+
+  if (lowerInput.includes('design') && lowerInput.includes('technology')) {
+    return `🎨 Career Suggestions for Design + Technology
+
+- UI/UX Designer — High demand in product teams
+- Frontend Developer — Build interactive web apps
+- Product Designer — Own end-to-end experiences
+- Digital Marketing Designer — Blend creativity + analytics
+
+Skills: Figma, HTML/CSS/JS, prototyping, user testing
+Roadmap: design basics → tools → coding fundamentals → portfolio → user research`
+  }
+
+  if (lowerInput.includes('html') || lowerInput.includes('css') || lowerInput.includes('python')) {
+    return `💻 Career Suggestions for HTML, CSS & Python
+
+- Full-Stack Web Developer — End-to-end apps
+- Frontend Developer — UI-focused roles
+- Backend Developer — APIs with Python
+- Data Analyst — Python + SQL for insights
+
+Skills: JS/React, Python frameworks, SQL/DB design, Git
+Roadmap: JS fundamentals → React → Django/Flask → DBs → projects`
+  }
+
+  if (lowerInput.includes('data science') || lowerInput.includes('data')) {
+    return `📊 Career Suggestions for Data Paths
+
+- Data Scientist — Models & insights
+- Data Analyst — Reporting & dashboards
+- Machine Learning Engineer — Production ML
+- BI Analyst — Business reporting
+
+Skills: Python (pandas/sklearn), SQL, stats, viz tools
+Roadmap: Python → data wrangling → stats → SQL → viz → ML basics`
+  }
+
+  return `🤖 AI Career Mentor (instant fallback)
+
+Your question: "${userInput || 'Tell me about your career interests!'}"
+
+- Share your skills and goals for tailored advice
+- I’ll suggest roles, skills, and a learning roadmap
+- You can ask for remote-friendly or high-growth options`
+}
 
 const CareerMentor = () => {
   // Load messages from localStorage if available
@@ -39,7 +88,6 @@ const CareerMentor = () => {
   const handleSubmit = async (userInput) => {
     if (!userInput.trim()) return
 
-    // Add user message
     const userMessage = {
       id: Date.now(),
       type: 'user',
@@ -48,25 +96,28 @@ const CareerMentor = () => {
     }
 
     setMessages(prev => [...prev, userMessage])
-    setShouldScrollToBottom(true) // Enable scrolling for new messages
+    setShouldScrollToBottom(true)
     setIsLoading(true)
+
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
 
     try {
       const response = await fetch(API_ENDPOINTS.careerGuidance, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message: userInput })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: userInput }),
+        signal: controller.signal
       })
+
+      clearTimeout(timeoutId)
 
       if (!response.ok) {
         throw new Error('Failed to get response')
       }
 
       const data = await response.json()
-      
-      // Add AI response
+
       const aiMessage = {
         id: Date.now() + 1,
         type: 'ai',
@@ -75,17 +126,20 @@ const CareerMentor = () => {
       }
 
       setMessages(prev => [...prev, aiMessage])
-      setShouldScrollToBottom(true) // Enable scrolling for AI response
+      setShouldScrollToBottom(true)
     } catch (error) {
+      clearTimeout(timeoutId)
       console.error('Error:', error)
-      const errorMessage = {
+
+      const fallbackContent = `${generateDemoResponse(userInput)}\n\n_(Instant offline mode while reconnecting. Live answers resume when the API is reachable.)_`
+      const aiMessage = {
         id: Date.now() + 1,
-        type: 'error',
-        content: 'Sorry, I encountered an error. Please try again.',
+        type: 'ai',
+        content: fallbackContent,
         timestamp: new Date()
       }
-      setMessages(prev => [...prev, errorMessage])
-      setShouldScrollToBottom(true) // Enable scrolling for error message
+      setMessages(prev => [...prev, aiMessage])
+      setShouldScrollToBottom(true)
     } finally {
       setIsLoading(false)
     }
