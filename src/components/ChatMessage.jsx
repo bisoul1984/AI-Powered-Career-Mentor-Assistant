@@ -1,6 +1,22 @@
 import { useState } from 'react'
 import { Copy, Download, User, Bot, AlertCircle, ThumbsUp, ThumbsDown } from 'lucide-react'
 
+// Light formatting for AI answers: **bold**, # headings and _italic_ notes.
+// Builds React elements (no raw HTML), so answer text can never inject markup.
+const renderInline = (text, keyPrefix) =>
+  text.split(/(\*\*[^*]+\*\*|(?<![\w*])_[^_\n]+_(?![\w*]))/g).map((part, i) => {
+    if (/^\*\*[^*]+\*\*$/.test(part)) return <strong key={`${keyPrefix}-${i}`}>{part.slice(2, -2)}</strong>
+    if (/^_[^_]+_$/.test(part)) return <em key={`${keyPrefix}-${i}`}>{part.slice(1, -1)}</em>
+    return part
+  })
+
+const formatContent = (content = '') =>
+  String(content).split('\n').map((line, i, lines) => {
+    const heading = line.match(/^\s*#{1,6}\s+(.*)$/)
+    const body = heading ? <strong>{renderInline(heading[1], `h${i}`)}</strong> : renderInline(line, `l${i}`)
+    return <span key={i}>{body}{i < lines.length - 1 ? '\n' : ''}</span>
+  })
+
 const ChatMessage = ({ message, onCopy, onDownload }) => {
   const { type, content, timestamp } = message
   const [feedback, setFeedback] = useState(null) // 'positive', 'negative', or null
@@ -77,7 +93,7 @@ const ChatMessage = ({ message, onCopy, onDownload }) => {
           <div className="prose prose-sm max-w-none">
             {type === 'ai' ? (
               <div className="whitespace-pre-wrap text-gray-800 dark:text-gray-200 leading-relaxed text-sm sm:text-base">
-                {content}
+                {formatContent(content)}
               </div>
             ) : (
               <p className="text-gray-800 dark:text-gray-200 text-sm sm:text-base">{content}</p>

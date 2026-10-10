@@ -6,7 +6,15 @@ const Footer = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">
           <p className="text-gray-600 dark:text-gray-300 mb-4">
-            Built with ❤️ by Bisrate Tadesse
+            Built with ❤️ by{' '}
+            <a
+              href="https://www.bisrat-tadesse.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition-colors duration-200"
+            >
+              Bisrat Tadesse
+            </a>
           </p>
           
           <div className="flex items-center justify-center space-x-6 mb-4">
@@ -19,15 +27,15 @@ const Footer = () => {
             >
               <Github className="h-5 w-5" />
             </a>
-            <a
-              href="https://linkedin.com/in/bisrate-tadesse"
+{/*             <a
+              href="https://linkedin.com/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200"
               aria-label="LinkedIn Profile"
             >
               <Linkedin className="h-5 w-5" />
-            </a>
+            </a> */}
             <a
               href="mailto:bisrat.tadesse@example.com"
               className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200"
@@ -38,7 +46,7 @@ const Footer = () => {
           </div>
           
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Powered by OpenAI GPT API • React • TailwindCSS
+            Powered by Gemini / OpenAI • React • TailwindCSS
           </p>
         </div>
       </div>
