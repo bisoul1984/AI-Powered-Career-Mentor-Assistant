@@ -6,7 +6,7 @@ import { useRef } from 'react'
 import { API_ENDPOINTS } from '../config/api'
 
 const LOCAL_STORAGE_KEY = 'careerMentorChatHistory'
-const REQUEST_TIMEOUT_MS = 8000
+const REQUEST_TIMEOUT_MS = 15000
 
 const generateDemoResponse = (userInput = '') => {
   const lowerInput = userInput.toLowerCase()

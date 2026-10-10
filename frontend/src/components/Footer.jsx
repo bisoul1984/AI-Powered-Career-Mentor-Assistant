@@ -46,7 +46,7 @@ const Footer = () => {
           </div>
           
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Powered by OpenAI GPT API • React • TailwindCSS
+            Powered by Gemini / OpenAI • React • TailwindCSS
           </p>
         </div>
       </div>
