@@ -48,5 +48,8 @@
     "gpt"
   ],
   "author": "Bisrat Tadesse",
-  "license": "MIT"
-} 
+  "license": "MIT",
+  "engines": {
+    "node": "22.x"
+  }
+}
