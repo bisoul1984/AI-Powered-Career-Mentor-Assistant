@@ -60,6 +60,9 @@ I'd be happy to provide personalized career guidance! Here are some general care
 💡 **Pro Tip:** The best career path is one that aligns with your interests, skills, and values!`
 }
 
+// Free hosting plans stop functions after about 10 seconds, so stop waiting for the AI before that
+const AI_TIMEOUT_MS = Number(process.env.AI_TIMEOUT_MS || 8500)
+
 module.exports = async (req, res) => {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -83,13 +86,13 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: 'Message is required' })
     }
 
+    const GEMINI_API_KEY = process.env.GEMINI_API_KEY
     const OPENAI_API_KEY = process.env.OPENAI_API_KEY
-    
-    // Check if OpenAI API key is configured
-    if (!OPENAI_API_KEY || OPENAI_API_KEY === 'your-openai-api-key-here') {
-      // Return a demo response instead of error
-      const demoResponse = generateDemoResponse(message)
-      return res.json({ response: demoResponse })
+    const hasOpenAI = OPENAI_API_KEY && OPENAI_API_KEY !== 'your-openai-api-key-here'
+
+    // No AI key configured: answer with the built-in demo guidance instead of failing
+    if (!GEMINI_API_KEY && !hasOpenAI) {
+      return res.json({ response: generateDemoResponse(message), mode: 'demo' })
     }
 
     // Create the prompt for career guidance
@@ -114,43 +117,85 @@ Format your response with clear sections like:
 
 Please provide personalized career guidance based on this input.`
 
-    // Call OpenAI API
-    const response = await axios.post(
-      'https://api.openai.com/v1/chat/completions',
-      {
-        model: 'gpt-3.5-turbo',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt }
-        ],
-        max_tokens: 1000,
-        temperature: 0.7
-      },
-      {
-        headers: {
-          'Authorization': `Bearer ${OPENAI_API_KEY}`,
-          'Content-Type': 'application/json'
+    let aiResponse
+    if (GEMINI_API_KEY) {
+      // Google Gemini (free tier available at https://aistudio.google.com).
+      // Try the configured model, then a stable fast model, then Google's auto-updating alias,
+      // so the app keeps working when Google retires a model.
+      const models = [...new Set([process.env.GEMINI_MODEL, 'gemini-3.5-flash-lite', 'gemini-flash-latest'].filter(Boolean))]
+      const deadline = Date.now() + AI_TIMEOUT_MS
+      for (const model of models) {
+        const timeLeft = deadline - Date.now()
+        if (timeLeft < 1000) break
+        try {
+          const response = await axios.post(
+            `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+            {
+              systemInstruction: { parts: [{ text: systemPrompt }] },
+              contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+              generationConfig: { maxOutputTokens: 1500, temperature: 0.7 }
+            },
+            {
+              headers: { 'Content-Type': 'application/json', 'x-goog-api-key': GEMINI_API_KEY },
+              timeout: timeLeft
+            }
+          )
+          const parts = response.data?.candidates?.[0]?.content?.parts || []
+          aiResponse = parts.map(p => p.text || '').join('').trim()
+          break
+        } catch (err) {
+          // Model retired or unavailable to this key: try the next one
+          if (err.response?.status === 404) { console.warn(`Gemini model ${model} not available`); continue }
+          throw err
         }
       }
-    )
+    } else {
+      // OpenAI
+      const response = await axios.post(
+        'https://api.openai.com/v1/chat/completions',
+        {
+          model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userPrompt }
+          ],
+          max_tokens: 1000,
+          temperature: 0.7
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${OPENAI_API_KEY}`,
+            'Content-Type': 'application/json'
+          },
+          timeout: AI_TIMEOUT_MS
+        }
+      )
+      aiResponse = response.data.choices[0].message.content
+    }
 
-    const aiResponse = response.data.choices[0].message.content
-
-    res.json({ response: aiResponse })
+    if (!aiResponse) {
+      return res.json({ response: generateDemoResponse(message), mode: 'demo' })
+    }
+    res.json({ response: aiResponse, mode: 'ai' })
 
   } catch (error) {
     console.error('Error calling OpenAI API:', error)
     
-    if (error.response?.status === 401) {
-      return res.status(500).json({ 
-        error: 'Invalid OpenAI API key. Please check your configuration.' 
-      })
+    if ([400, 401, 403].includes(error.response?.status)) {
+      // Usually a wrong / missing-permission API key. Visitors still get guidance;
+      // the site owner sees the real reason in the function logs.
+      console.error('AI key problem - check GEMINI_API_KEY / OPENAI_API_KEY:', error.response?.data?.error?.message || error.message)
+      return res.json({ response: generateDemoResponse(req.body?.message || ''), mode: 'demo' })
     }
-    
+
+    if (error.code === 'ECONNABORTED' || error.code === 'ETIMEDOUT' || /timeout/i.test(error.message || '')) {
+      // AI took too long: still give the visitor useful guidance
+      return res.json({ response: generateDemoResponse(req.body?.message || ''), mode: 'demo' })
+    }
+
     if (error.response?.status === 429) {
-      return res.status(429).json({ 
-        error: 'Rate limit exceeded. Please try again later.' 
-      })
+      // Free-tier limit reached: still give the visitor useful guidance
+      return res.json({ response: generateDemoResponse(req.body?.message || ''), mode: 'demo' })
     }
 
     res.status(500).json({ 
