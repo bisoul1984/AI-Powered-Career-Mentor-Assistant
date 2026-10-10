@@ -4,7 +4,7 @@ A React-based web assistant that helps users explore careers using OpenAI GPT-4.
 
 ## 🌐 Live Application
 
-**Access the application here**: [https://ai-powered-career-mentor-assistant.vercel.app/](https://ai-powered-career-mentor-assistant.vercel.app/)
+**Access the application here**: [https://bisrat-career-mentor.netlify.app/](https://bisrat-career-mentor.netlify.app/)
 
 ## 🚀 Features
 
@@ -76,7 +76,7 @@ Builds the React app and starts the production server.
 
 ## 📱 Usage
 
-1. **Live Application**: Visit [https://ai-powered-career-mentor-assistant.vercel.app/](https://ai-powered-career-mentor-assistant.vercel.app/)
+1. **Live Application**: Visit [https://bisrat-career-mentor.netlify.app/](https://bisrat-career-mentor.netlify.app/)
 2. **Local Development**: Open your browser and navigate to `http://localhost:3000` (dev) or `http://localhost:5000` (production)
 3. Enter your skills, interests, or career questions in the text area
 4. Click "Ask Mentor" or press Enter
@@ -161,8 +161,8 @@ Sends user input to OpenAI and returns career guidance.
 
 ## 🚀 Deployment
 
-### Frontend (Vercel)
-- **URL**: [https://ai-powered-career-mentor-assistant.vercel.app/](https://ai-powered-career-mentor-assistant.vercel.app/)
+### Frontend (Netlify)
+- **URL**: [https://bisrat-career-mentor.netlify.app/](https://bisrat-career-mentor.netlify.app/)
 - **Framework**: Vite + React
 - **Build Command**: `npm run build`
 - **Output Directory**: `dist`
@@ -213,4 +213,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Built with ❤️ by [Bisrat Tadesse](https://www.bisrat-tadesse.com)**
 
-**🌐 Live Application**: [https://ai-powered-career-mentor-assistant.vercel.app/](https://ai-powered-career-mentor-assistant.vercel.app/) 
+**🌐 Live Application**: [https://bisrat-career-mentor.netlify.app/](https://bisrat-career-mentor.netlify.app/) 
